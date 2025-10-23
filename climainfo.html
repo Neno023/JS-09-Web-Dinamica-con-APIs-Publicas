@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Climón - Clima Actual</title>
+  <link rel="stylesheet" href="css/article.css" />
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="Logo El Climón" class="logo" />
+
+    <div class="search-bar">
+      <input type="text" id="cityInput" placeholder="Buscar otra Ciudad..." />
+      <button id="searchBtn">Buscar</button>
+    </div>
+
+    <nav>
+      <a href="#">Nosotros</a>
+      <a href="#">Usuario</a>
+      <a href="#" class="inicio">Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="current-weather">
+      <div class="card">
+        <h2 id="temp">--°C</h2>
+        <p id="cityName">Ciudad, País</p>
+        <img id="weatherIcon" src="" alt="Icono del clima" />
+      </div>
+    </section>
+
+    <section class="forecast">
+      <div class="forecast-hourly">
+        <h3>Pronóstico por hora</h3>
+        <div class="forecast-grid" id="hourlyForecast">
+          <!-- Se llenará dinámicamente -->
+        </div>
+      </div>
+
+      <div class="forecast-daily">
+        <h3>Pronóstico semanal</h3>
+        <div class="forecast-grid" id="dailyForecast">
+          <!-- Se llenará dinámicamente -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Todos los derechos reservados</p>
+  </footer>
+
+</body>
+</html>
