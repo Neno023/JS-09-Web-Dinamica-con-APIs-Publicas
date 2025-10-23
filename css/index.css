@@ -1,0 +1,131 @@
+/* === Estructura base para mantener el footer abajo === */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #fff;
+  color: #000;
+}
+
+/* El contenido principal empuja el footer hacia abajo */
+main {
+  flex: 1;
+}
+
+/* === Encabezado === */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 3rem;
+}
+
+.logo {
+  width: 70px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #5b5bde;
+  font-weight: 500;
+}
+
+.btn {
+  background-color: #6b63ff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #4d47c3;
+}
+
+/* === Título principal === */
+.main {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.titulo {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #000;
+  text-shadow: 5px 5px 0 #f8b84a;
+  margin-bottom: 2rem;
+}
+
+/* === Buscador === */
+.buscador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.buscador label {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.buscador input {
+  width: 50%;
+  max-width: 600px;
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.buscar-btn {
+  background-color: #6b96c8;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.buscar-btn:hover {
+  background-color: #5178a7;
+}
+
+/* === Pie de página === */
+.footer {
+  background-color: #f6b562;
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  margin-top: auto; /* Clave para que el footer quede al fondo */
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.social img {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0);
+}
+
+.footer p {
+  font-size: 0.95rem;
+  margin: 0;
+}
