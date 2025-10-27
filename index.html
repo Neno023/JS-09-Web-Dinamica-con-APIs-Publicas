@@ -24,11 +24,14 @@
     <h1 class="titulo">EL CLIMÓN</h1>
 
     <!-- Buscador -->
-    <form class="buscador" action="climainfo.html" method="get">
-      <label for="ciudad">Buscar Ciudad</label>
-      <input type="text" id="ciudad" name="q" placeholder="Ciudad..." required>
-      <button type="submit" class="buscar-btn">Buscar</button>
-    </form>
+<div class="suggestions-container">
+      <form class="buscador" id="searchForm" autocomplete="off">
+        <label for="ciudad">Buscar Ciudad</label>
+        <input type="text" id="ciudad" name="q" placeholder="Ciudad..." required>
+        <ul id="suggestions" class="suggestions-list"></ul>
+        <button type="submit" class="buscar-btn">Buscar</button>
+      </form>
+    </div>
   </main>
 
   <!-- Pie de página -->
@@ -42,5 +45,6 @@
     <p>Todos los derechos reservados</p>
   </footer>
 
+  <script src="js/W_API_buscar.js"></script>
 </body>
 </html>

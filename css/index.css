@@ -129,3 +129,29 @@ main {
   font-size: 0.95rem;
   margin: 0;
 }
+
+.suggestions-list {
+      display: none; 
+    }
+    .suggestions-container {
+      position: relative;
+    }
+    .suggestions-list {
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      list-style-type: none;
+      margin: 5px 0 0;
+      padding: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .suggestions-list li {
+      padding: 12px 15px;
+      cursor: pointer;
+    }
+    .suggestions-list li:hover {
+      background-color: #f0f0f0;
+    }
