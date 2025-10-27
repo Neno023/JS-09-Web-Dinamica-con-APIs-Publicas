@@ -1,169 +1,259 @@
-/* === Estructura base para mantener el footer abajo === */
-:root{
-  --accent: #6b63ff;         /* botón principal (Registro) */
-  --accent-hover:#4d47c3;
-  --muted: #5b5bde;          /* links del header */
-  --accent-2:#6b96c8;        /* botón Buscar */
-  --accent-2-hover:#5178a7;
-  --title-shadow:#f8b84a;    /* sombra del título EL CLIMÓN */
-  --card:#fff;
-  --card-soft:#f9f3ee;
-  --footer:#f6b562;
-  --ink:#000;
-  --radius:12px;
-  --shadow:0 6px 22px rgba(0,0,0,.08);
-  --shadow-soft:0 3px 10px rgba(0,0,0,.06);
-}
+/* Base */
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
 html, body { height: 100%; margin: 0; }
+
 body{
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
-  font-family:'Segoe UI', Arial, sans-serif;
-  background:#fff;
-  color:var(--ink);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #ffffff;
+  color: #000000;
 }
-main.main{ flex:1; padding: 3rem 1rem; }
 
-/* === HEADER (idéntico al index) === */
+main.main{ flex: 1; padding: 3rem 1rem; }
+
+/* Header (igual a index) */
 .header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:1rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 3rem;
 }
-.logo{ width:70px; height:auto; }
-.nav{ display:flex; align-items:center; gap:1.5rem; }
-.nav a{
-  text-decoration:none;
-  color:var(--muted);
-  font-weight:500;
-}
-.btn{
-  background-color:var(--accent);
-  color:#fff;
-  border:none;
-  padding:.5rem 1rem;
-  border-radius:6px;
-  cursor:pointer;
-}
-.btn:hover{ background-color:var(--accent-hover); }
 
-/* === Título principal (opcional si lo usas en climainfo) === */
+.logo{ width: 70px; height: auto; }
+
+.nav{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav a{
+  text-decoration: none;
+  color: #5b5bde;
+  font-weight: 500;
+}
+
+.btn{
+  background-color: #6b63ff;
+  color: #ffffff;
+  border: none;
+  padding: .5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover{ background-color: #4d47c3; }
+
+/* Título grande (opcional) */
 .titulo{
-  text-align:center;
-  font-size:4rem;
-  font-weight:900;
-  color:#000;
-  text-shadow: 5px 5px 0 var(--title-shadow);
+  text-align: center;
+  font-size: 4rem;
+  font-weight: 900;
+  color: #000000;
+  text-shadow: 5px 5px 0 #f8b84a;
   margin: 0 0 2rem;
 }
 
-/* === Buscador === */
+/* Buscador */
 .buscador{
-  display:flex; flex-wrap:wrap; gap:.7rem;
-  justify-content:center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .7rem;
+  justify-content: center;
   margin: 0 auto 1.5rem;
 }
+
 .buscador label{
-  font-size:.9rem; font-weight:500;
+  font-size: .9rem;
+  font-weight: 500;
 }
-.buscador input{
-  width:min(600px, 90vw);
-  padding:.7rem;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font-size:1rem;
-}
-.buscar-btn{
-  background-color:var(--accent-2);
-  color:#fff;
-  border:none;
-  padding:.6rem 1.2rem;
-  border-radius:6px;
-  cursor:pointer;
-}
-.buscar-btn:hover{ background-color:var(--accent-2-hover); }
 
-/* === Tarjeta hero (clima actual) === */
+.buscador input{
+  width: min(600px, 90vw);
+  padding: .7rem;
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.buscar-btn{
+  background-color: #6b96c8;
+  color: #ffffff;
+  border: none;
+  padding: .6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.buscar-btn:hover{ background-color: #5178a7; }
+
+/* Clima actual (hero) */
 .card-hero{
-  background:var(--card);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:1.2rem;
-  max-width:980px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 22px rgba(0,0,0,.08);
+  padding: 1.2rem;
+  max-width: 980px;
   margin: 0 auto 1.5rem;
 }
-.hero-top{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; }
-.hero-city{ margin:0; font-size:clamp(1.2rem, 2.5vw, 1.8rem); font-weight:800; }
-.hero-desc{ margin:0; color:#444; }
-.hero-middle{ display:flex; align-items:center; justify-content:center; gap:1rem; padding:.8rem 0; }
-.hero-temp{ font-size:clamp(2.4rem, 7vw, 4.2rem); font-weight:900; text-shadow: 4px 4px 0 var(--title-shadow); }
+
+.hero-top{
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hero-city{
+  margin: 0;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-weight: 800;
+}
+
+.hero-desc{ margin: 0; color: #444444; }
+
+.hero-middle{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: .8rem 0;
+}
+
+.hero-temp{
+  font-size: clamp(2.4rem, 7vw, 4.2rem);
+  font-weight: 900;
+  text-shadow: 4px 4px 0 #f8b84a;
+}
+
 .hero-extras{
-  display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:.6rem; margin-top:.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: .6rem;
+  margin-top: .5rem;
 }
+
 .extra{
-  background:var(--card-soft);
-  border-radius:10px; padding:.7rem .9rem; text-align:center;
-  box-shadow:var(--shadow-soft);
+  background: #90a49f;
+  border-radius: 10px;
+  padding: .7rem .9rem;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,.06);
 }
-.extra span{ display:block; color:#555; font-size:.9rem; }
-.extra strong{ font-size:1.05rem; }
 
-/* === Títulos de sección === */
+.extra span{ display: block; color: #555555; font-size: .9rem; }
+.extra strong{ font-size: 1.05rem; }
+
+/* Secciones */
 .section-title{
-  font-weight:800; margin: 1.6rem auto .8rem; max-width:980px;
+  font-weight: 800;
+  margin: 1.6rem auto .8rem;
+  max-width: 980px;
 }
 
-/* === Grillas de pronóstico (tarjetas proporcionadas) === */
-.grid{ display:grid; gap:1rem; margin: 0 auto; max-width:980px; }
+/* Grillas */
+.grid{
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+  max-width: 980px;
+}
+
 .grid-hourly{ grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 .grid-daily{  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 
-/* Tarjeta hora */
+/* Tarjetas de pronóstico */
 .card-mini{
-  background:#fff; border-radius:var(--radius); box-shadow:var(--shadow-soft);
-  padding:.9rem; text-align:center; min-height:150px;
-  display:flex; flex-direction:column; justify-content:space-between; align-items:center;
+  background: #c5c0c0;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.06);
+  padding: .9rem;
+  text-align: center;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
-.card-mini__time{ color:#555; }
-.card-mini__temp{ font-weight:800; font-size:1.2rem; }
 
-/* Tarjeta día */
+.card-mini__time{ color: #555555; }
+.card-mini__temp{ font-weight: 800; font-size: 1.2rem; }
+
 .card-day{
-  background:#fff; border-radius:var(--radius); box-shadow:var(--shadow-soft);
-  padding:1rem; text-align:center; min-height:170px;
-  display:flex; flex-direction:column; justify-content:space-between; align-items:center;
+  background: #c5c0c0;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,.06);
+  padding: 1rem;
+  text-align: center;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
-.card-day__name{ color:#333; }
-.card-day__temps{ display:flex; gap:.5rem; align-items:baseline; }
-.card-day__temps .max{ font-weight:800; }
-.card-day__temps .min{ color:#555; }
 
-/* === Mapa === */
-.map-wrap{ max-width:980px; margin: 1rem auto 0; }
-.map-frame{ border-radius:12px; overflow:hidden; box-shadow:var(--shadow); }
+.card-day__name{ color: #333333; }
 
-/* === Footer === */
+.card-day__temps{
+  display: flex;
+  gap: .5rem;
+  align-items: baseline;
+}
+
+.card-day__temps .max{ font-weight: 800; }
+.card-day__temps .min{ color: #555555; }
+
+/* Mapa */
+.map-wrap{ max-width: 980px; margin: 1rem auto 0; }
+.map-frame{ border-radius: 12px; overflow: hidden; box-shadow: 0 6px 22px rgba(0,0,0,.08); }
+
+/* Footer */
 .footer{
-  background-color:var(--footer);
-  text-align:center;
+  background-color: #f6b562;
+  text-align: center;
   padding: 2rem 1rem 1rem;
-  margin-top:auto;
+  margin-top: auto;
 }
-.social{ display:flex; justify-content:center; gap:1.2rem; margin-bottom:1rem; }
-.social img{ width:20px; height:20px; filter: brightness(0); }
-.footer p{ font-size:.95rem; margin:0; }
 
-/* === Accesibilidad === */
+.social{
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.social img{
+  width: 20px;
+  height: 20px;
+  filter: brightness(0);
+}
+
+.footer p{
+  font-size: .95rem;
+  margin: 0;
+}
+
+/* Accesibilidad */
 .visually-hidden{
-  position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
 }
 
-/* === Responsivo === */
+/* Responsivo */
 @media (max-width: 520px){
-  .header{ padding:.8rem 1rem; }
+  .header{ padding: .8rem 1rem; }
   .titulo{ font-size: 2.8rem; }
   .hero-extras{ grid-template-columns: 1fr; }
 }
