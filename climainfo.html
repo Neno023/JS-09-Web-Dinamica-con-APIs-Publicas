@@ -10,21 +10,21 @@
 </head>
 <body>
 
-  <!-- Encabezado -->
+  <!-- HEADER igual que index.html -->
   <header class="header">
-    <a href="index.html" class="brand">
-      <img src="src/img/logo.png" class="logo" alt="El Climón"/>
-      <span class="brand-text">El Climón</span>
-    </a>
-
+    <img src="src/img/logo.png" class="logo" alt="El Climón">
     <nav class="nav">
       <a href="nosotros.html">Nosotros</a>
-      <a href="#">Usuario</a>
-      <a href="index.html" class="btn btn-link px-0 nav-home">Inicio</a>
+      <a href="#">Recomendaciones</a>
+      <button class="btn" onclick="location.href='index.html'">Inicio</button>
     </nav>
   </header>
 
+  <!-- Contenido principal -->
   <main class="container-xl main">
+    <!-- Título -->
+    <h1 class="titulo">EL CLIMÓN</h1>
+
     <!-- Buscador -->
     <form class="buscador buscador--inline" action="climainfo.html" method="get" id="searchForm" autocomplete="off">
       <label for="cityInput" class="visually-hidden">Buscar Ciudad</label>
@@ -66,7 +66,7 @@
     <section id="mapResult" class="map-wrap"></section>
   </main>
 
-  <!-- Pie de página -->
+  <!-- FOOTER -->
   <footer class="footer">
     <div class="social">
       <a href="https://www.facebook.com" target="_blank" rel="noopener"><img src="src/img/facebook.png" alt="Facebook"></a>
