@@ -1,0 +1,108 @@
+/* Estilos generales */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fff6ef;
+  color: #222;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fcbf65;
+  padding: 10px 30px;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo img {
+  height: 40px;
+  margin-right: 10px;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  margin: 0;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+/* Secciones principales */
+.recomendaciones {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.recomendaciones h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.recomendaciones p {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Tarjetas */
+.cards-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 280px;
+  padding: 25px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+}
+
+.card img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* Footer */
+footer {
+  background-color: #fcbf65;
+  text-align: center;
+  padding: 15px 0;
+  font-weight: 600;
+  margin-top: 40px;
+}
