@@ -1,4 +1,4 @@
-// js/climainfo.js
+
 
 // ==================== CONFIGURACIÓN Y SELECTOR ====================
 const apiKey = '579d8622c67f62745e2dc1592a37b897'; // Tu API Key
