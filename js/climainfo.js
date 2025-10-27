@@ -22,6 +22,10 @@ window.addEventListener('DOMContentLoaded', () => {
   if (cityFromURL) {
     $('#cityInput').value = cityFromURL;
     getWeather(cityFromURL);
+  } else {
+    // Asegura que el link de recomendaciones exista aunque no haya datos
+    const link = document.getElementById('recomLink');
+    if (link) link.href = 'sugerencias.html';
   }
 });
 
@@ -83,7 +87,7 @@ async function getCurrentWeather(city) {
       // Guardar para Recomendaciones
       saveForRecs({
         city: `${data.name}, ${data.sys.country}`,
-        desc: toOneLine(data.weather?.[0]?.description || ''),
+        desc: toOneLine((data.weather?.[0]?.description || '').toLowerCase()),
         temp: Math.round(data.main.temp),
         feels: Math.round(data.main.feels_like),
         hum: data.main.humidity,
@@ -99,6 +103,8 @@ async function getCurrentWeather(city) {
     }
   } catch (e) {
     console.error('Error clima actual', e);
+    const link = document.getElementById('recomLink');
+    if (link) link.href = 'sugerencias.html';
   }
 }
 
@@ -111,6 +117,9 @@ async function getForecast(city) {
     if (data.cod === "200") {
       renderHourly(data.list);
       renderDaily(data.list);
+    } else {
+      $('#hourlyForecast').innerHTML = '';
+      $('#dailyForecast').innerHTML = '';
     }
   } catch (e) {
     console.error('Error pronóstico', e);
@@ -184,6 +193,8 @@ async function getWeatherMap(city) {
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
         </div>`;
+    } else {
+      $('#mapResult').innerHTML = '';
     }
   } catch (e) {
     console.error('Error mapa', e);
