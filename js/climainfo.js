@@ -3,7 +3,6 @@ const apiKey = '579d8622c67f62745e2dc1592a37b897';
 const $ = (sel) => document.querySelector(sel);
 
 // ==================== EVENTOS ====================
-
 // Buscar al enviar el formulario
 $('#searchForm').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -26,8 +25,32 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ==================== FUNCIONES PRINCIPALES ====================
+// ==================== UTILIDADES ====================
+function toOneLine(text = '') {
+  return String(text)
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .trim();
+}
 
+// Guarda payload para sugerencias y actualiza el link
+function saveForRecs(payload) {
+  try { sessionStorage.setItem('climon.rec', JSON.stringify(payload)); } catch {}
+  const link = document.getElementById('recomLink');
+  if (link) {
+    const qp = new URLSearchParams({
+      city: payload.city || '',
+      desc: payload.desc || '',
+      temp: String(payload.temp ?? ''),
+      feels: String(payload.feels ?? ''),
+      hum: String(payload.hum ?? ''),
+      wind: String(payload.wind ?? '')
+    });
+    link.href = `sugerencias.html?${qp.toString()}`;
+  }
+}
+
+// ==================== FUNCIONES PRINCIPALES ====================
 async function getWeather(cityParam) {
   const city = cityParam || $('#cityInput').value.trim();
   if (!city) return;
@@ -56,14 +79,26 @@ async function getCurrentWeather(city) {
         <div class="extra"><span>Humedad</span><strong>${data.main.humidity}%</strong></div>
         <div class="extra"><span>Viento</span><strong>${data.wind.speed} m/s</strong></div>
       `;
+
+      // Guardar para Recomendaciones
+      saveForRecs({
+        city: `${data.name}, ${data.sys.country}`,
+        desc: toOneLine(data.weather?.[0]?.description || ''),
+        temp: Math.round(data.main.temp),
+        feels: Math.round(data.main.feels_like),
+        hum: data.main.humidity,
+        wind: data.wind.speed
+      });
     } else {
       $('#cityName').textContent = 'No encontrado';
       $('#temp').textContent = '--°C';
       $('#description').textContent = '';
       $('#extras').innerHTML = '';
+      const link = document.getElementById('recomLink');
+      if (link) link.href = 'sugerencias.html';
     }
   } catch (e) {
-    console.error(e);
+    console.error('Error clima actual', e);
   }
 }
 
@@ -78,7 +113,7 @@ async function getForecast(city) {
       renderDaily(data.list);
     }
   } catch (e) {
-    console.error(e);
+    console.error('Error pronóstico', e);
   }
 }
 
@@ -151,6 +186,6 @@ async function getWeatherMap(city) {
         </div>`;
     }
   } catch (e) {
-    console.error(e);
+    console.error('Error mapa', e);
   }
 }
