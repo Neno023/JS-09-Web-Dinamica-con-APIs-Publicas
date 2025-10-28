@@ -91,7 +91,7 @@
       despejado: {
         actividades: [
           {
-            img: 1,
+            img: "https://definicion.de/wp-content/uploads/2013/02/paseo-1.jpg",
             titulo: "Paseo al aire libre",
             descripcion: "Perfecto para caminar en parques o hacer senderismo con cielo despejado."
           },
