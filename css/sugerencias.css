@@ -128,3 +128,30 @@ footer {
     .suggestions-list li:hover {
       background-color: #f0f0f0;
     }
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Mensaje cuando no hay datos climáticos */
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  background-color: #fff8e1;
+  border-radius: 10px;
+  margin: 1rem auto;
+  max-width: 500px;
+}
+
+.no-data a {
+  color: #6b96c8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.no-data a:hover {
+  text-decoration: underline;
+}
