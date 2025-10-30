@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>El Climón</title>
   <!-- Enlace correcto al CSS -->
-  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
 
   <!-- Encabezado -->
   <header class="header">
-    <img src="src/img/logo.png"  class="logo">
+    <img src="src/img/logo.png" class="logo" alt="Logo El Climón" />
     <nav class="nav">
       <a href="nosotros.html">Nosotros</a>
       <a href="#">Usuario</a>
@@ -23,12 +23,48 @@
   <main class="main">
     <h1 class="titulo">EL CLIMÓN</h1>
 
-    <!-- Buscador -->
-<div class="suggestions-container">
+    <!-- Contenedor del buscador -->
+    <div class="suggestions-container">
       <form class="buscador" id="searchForm" autocomplete="off">
         <label for="ciudad">Buscar Ciudad</label>
-        <input type="text" id="ciudad" name="q" placeholder="Ciudad..." required>
-        <ul id="suggestions" class="suggestions-list"></ul>
+
+        <!--
+          Wrapper .autocomplete:
+          - Controla ancho
+          - Posiciona la lista
+          - Alberga el input, el icon-button y el dropdown
+        -->
+        <div class="autocomplete">
+          <input
+            type="text"
+            id="ciudad"
+            name="q"
+            placeholder="Ciudad..."
+            required
+            aria-autocomplete="list"
+            aria-controls="suggestions"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+          />
+
+          <!-- Botón-ícono dentro del input (tipo Google) -->
+          <button
+            class="search-icon-btn"
+            type="submit"
+            aria-label="Buscar"
+            title="Buscar"
+          >
+            <!-- Ícono que nos pasaste -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+              <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
+            </svg>
+          </button>
+
+          <!-- Dropdown -->
+          <ul id="suggestions" class="suggestions-list" role="listbox" aria-label="Sugerencias"></ul>
+        </div>
+
+        <!-- Botón grande debajo (lo mantenemos por accesibilidad / UX) -->
         <button type="submit" class="buscar-btn">Buscar</button>
       </form>
     </div>
@@ -37,14 +73,15 @@
   <!-- Pie de página -->
   <footer class="footer">
     <div class="social">
-      <a href="https://www.facebook.com"><img src="src/img/facebook.png" alt="Facebook"></a>
-      <a href="https://www.linkedin.com"><img src="src/img/linkedin.png" alt="LinkedIn"></a>
-      <a href="https://www.youtube.com"><img src="src/img/YouTube.png" alt="YouTube"></a>
-      <a href="https://www.instagram.com"><img src="src/img/instagram.png" alt="Instagram"></a>
+      <a href="https://www.facebook.com"><img src="src/img/facebook.png" alt="Facebook" /></a>
+      <a href="https://www.linkedin.com"><img src="src/img/linkedin.png" alt="LinkedIn" /></a>
+      <a href="https://www.youtube.com"><img src="src/img/YouTube.png" alt="YouTube" /></a>
+      <a href="https://www.instagram.com"><img src="src/img/instagram.png" alt="Instagram" /></a>
     </div>
     <p>Todos los derechos reservados</p>
   </footer>
 
+  <!-- JS -->
   <script src="js/W_API_buscar.js"></script>
 </body>
 </html>
