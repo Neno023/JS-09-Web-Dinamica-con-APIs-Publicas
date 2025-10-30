@@ -28,12 +28,6 @@
       <form class="buscador" id="searchForm" autocomplete="off">
         <label for="ciudad">Buscar Ciudad</label>
 
-        <!--
-          Wrapper .autocomplete:
-          - Controla ancho
-          - Posiciona la lista
-          - Alberga el input, el icon-button y el dropdown
-        -->
         <div class="autocomplete">
           <input
             type="text"
@@ -47,14 +41,14 @@
             aria-haspopup="listbox"
           />
 
-          <!-- Botón-ícono dentro del input (tipo Google) -->
+          <!-- Botón-ícono dentro del input como en google -->
           <button
             class="search-icon-btn"
             type="submit"
             aria-label="Buscar"
             title="Buscar"
           >
-            <!-- Ícono que nos pasaste -->
+            
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
               <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
             </svg>
@@ -64,8 +58,9 @@
           <ul id="suggestions" class="suggestions-list" role="listbox" aria-label="Sugerencias"></ul>
         </div>
 
-        <!-- Botón grande debajo (lo mantenemos por accesibilidad / UX) -->
-        <button type="submit" class="buscar-btn">Buscar</button>
+        <!-- Botón de buscar, ya no lo necesitamos porque aparte de ser reemplazado por el icono dentro del input queda también 
+         debajo de las sugerencias en tal caso de escribir una ciudad (queda inaccesible)  -->
+        <!-- <button type="submit" class="buscar-btn">Buscar</button> -->
       </form>
     </div>
   </main>
