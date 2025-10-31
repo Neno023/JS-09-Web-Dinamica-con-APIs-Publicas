@@ -45,7 +45,7 @@ body {
 /* Secciones principales */
 .recomendaciones {
   text-align: center;
-  padding: 50px 20px;
+  padding: 5px 5px;
 }
 
 .recomendaciones h2 {
@@ -154,4 +154,17 @@ footer {
 
 .no-data a:hover {
   text-decoration: underline;
+}
+
+/*Multiple Images*/
+.multiple-images {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.multiple-images img {
+    width: 30%; /* Ajustar según cuántas imágenes se quiera mostrar */
+    max-width: 100px;
 }

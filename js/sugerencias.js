@@ -24,45 +24,84 @@
     }
   }
 
-  // 2) Determinar tipo de clima principal
-  const tipoClima = determinarTipoClima(desc);
-  climaElement.textContent = desc && desc.length ? desc : 'clima de tu ciudad';
+  // 2) Verificar si hay datos climáticos
+  if (!desc) {
+    mostrarMensajeSinDatos();
+    return;
+  }
 
-  // 3) Generar recomendaciones dinámicas
+  // 3) Determinar tipo de clima principal y generar recomendaciones
+  const tipoClima = determinarTipoClima(desc);
+  climaElement.textContent = desc;
   generarRecomendaciones(tipoClima);
 
   // ==================== FUNCIONES PRINCIPALES ====================
 
+  function mostrarMensajeSinDatos() {
+    actividadesContainer.innerHTML = `
+      <div class="no-data">
+        <h3>📡 No hay datos climáticos</h3>
+        <p>Para ver recomendaciones personalizadas, primero busca una ciudad en la página de clima.</p>
+        <a href="climainfo.html">Ir a buscar clima</a>
+      </div>
+    `;
+    ropaContainer.innerHTML = `
+      <div class="no-data">
+        <p>Las recomendaciones de ropa aparecerán cuando consultes el clima de una ciudad.</p>
+      </div>
+    `;
+  }
+
   function determinarTipoClima(descripcion) {
     const desc = descripcion.toLowerCase();
     
-    // Cielo despejado
-    if (desc.includes('cielo claro') || desc.includes('despejado')) return 'despejado';
+    // 1. Condiciones extremas
+    if (desc.includes('tornado') || desc.includes('huracán') || desc.includes('ciclón') || 
+        desc.includes('ceniza') || desc.includes('polvo') || desc.includes('granizo') || 
+        desc.includes('inundación') || desc.includes('ola de calor') || desc.includes('ola de frío') ||
+        desc.includes('helada') || desc.includes('torbellinos de arena') || desc.includes('arena')) return 'extremo';
     
-    // Nubes
+    // 2. Tormentas eléctricas
+    if (desc.includes('tormenta') || desc.includes('rayos') || desc.includes('truenos') || 
+        desc.includes('eléctrica')) return 'tormenta';
+    
+    // 3. Viento
+    if (desc.includes('viento') || desc.includes('ventoso') || desc.includes('ráfagas') || 
+        desc.includes('vendaval') || desc.includes('temporal')) return 'viento';
+    
+    // 4. Nieve fuerte
+    if (desc.includes('nevada') || desc.includes('ventisca') || 
+        desc.includes('nevasca') || desc.includes('tormenta de nieve')) return 'nieve_fuerte';
+    
+    // 5. Nieve ligera
+    if (desc.includes('aguanieve') || desc.includes('cellisca') || desc.includes('copos ligeros') || 
+        desc.includes('nevada ligera') || desc.includes('nieve')) return 'nieve_ligera';
+    
+    // 6. Lluvia (TODOS los tipos de lluvia)
+    if (desc.includes('llovizna') || desc.includes('garúa') || desc.includes('lluvia ligera') || 
+        desc.includes('lluvia leve') || desc.includes('lluvia moderada') || desc.includes('lluvia intensa') || 
+        desc.includes('aguacero') || desc.includes('diluvió') || desc.includes('chubascos') || desc.includes('lluvia')) return 'lluvia';
+    
+    // 7. Niebla
+    if (desc.includes('niebla') || desc.includes('neblina') || desc.includes('calima') || 
+        desc.includes('visibilidad reducida') || desc.includes('humo') || desc.includes('escarcha') ||
+        desc.includes('bruma') || desc.includes('mist') || desc.includes('humedad') || desc.includes('rocío')) return 'niebla';
+    
+    // 8. Parcialmente nublado
     if (desc.includes('pocas nubes') || desc.includes('nubes dispersas') || 
-        desc.includes('muy nuboso') || desc.includes('nublado')) return 'nublado';
+        desc.includes('parcialmente nublado') || desc.includes('intervalos nubosos') ||
+        desc.includes('algo de nubes') || desc.includes('algunas nubes') || desc.includes('nubes y claros')) return 'parcialmente_nublado';
     
-    // Lluvia
-    if (desc.includes('lluvia') || desc.includes('chubascos') || desc.includes('llovizna')) {
-      if (desc.includes('ligera') || desc.includes('leve')) return 'lluvia_ligera';
-      return 'lluvia_fuerte';
-    }
+    // 9. Nublado
+    if (desc.includes('muy nubloso') || desc.includes('totalmente nublado') || 
+        desc.includes('cubierto') || desc.includes('nublado') || desc.includes('nubes rotas') || desc.includes('nubes')) return 'nublado';
     
-    // Tormentas
-    if (desc.includes('tormenta')) return 'tormenta';
+    // 10. Despejado (por defecto)
+    if (desc.includes('cielo claro') || desc.includes('despejado') || 
+        desc.includes('soleado') || desc.includes('sin nubes')) return 'despejado';
     
-    // Nieve
-    if (desc.includes('nieve') || desc.includes('nevada') || desc.includes('aguanieve')) return 'nieve';
-    
-    // Condiciones atmosféricas
-    if (desc.includes('niebla') || desc.includes('bruma') || desc.includes('neblina')) return 'niebla';
-    
-    // Condiciones extremas
-    if (desc.includes('tornado') || desc.includes('ceniza') || desc.includes('polvo')) return 'extremo';
-    
-    return 'despejado'; // Por defecto
-  }
+    return 'despejado'; // Por defecto si no coincide con nada
+}
 
   function generarRecomendaciones(tipoClima) {
     const recomendaciones = obtenerRecomendacionesPorClima(tipoClima);
@@ -70,314 +109,405 @@
     // Generar actividades
     actividadesContainer.innerHTML = recomendaciones.actividades.map(act => `
       <div class="card">
-        <img src="img/actividad${act.img}.png" alt="${act.titulo}">
+        <img src="src/img/actividad/${act.img}.png" alt="${act.titulo}">
         <h3>${act.titulo}</h3>
         <p>${act.descripcion}</p>
       </div>
     `).join('');
 
-    // Generar ropa
-    ropaContainer.innerHTML = recomendaciones.ropa.map(outfit => `
-      <div class="card">
-        <img src="img/ropa${outfit.img}.png" alt="${outfit.titulo}">
-        <h3>${outfit.titulo}</h3>
-        <p>${outfit.descripcion}</p>
-      </div>
-    `).join('');
-  }
+    // Generar ropa (VERSIÓN MEJORADA para múltiples imágenes)
+    ropaContainer.innerHTML = recomendaciones.ropa.map(outfit => {
+        // Si img es un array, mostrar múltiples imágenes
+        if (Array.isArray(outfit.img)) {
+            return `
+            <div class="card">
+                <div class="multiple-images">
+                    ${outfit.img.map(img => `
+                        <img src="src/img/ropa/${img}.png" alt="${outfit.titulo}">
+                    `).join('')}
+                </div>
+                <h3>${outfit.titulo}</h3>
+                <p>${outfit.descripcion}</p>
+            </div>
+            `;
+        } 
+        // Si img es string, mostrar una sola imagen (compatibilidad hacia atrás)
+        else {
+            return `
+            <div class="card">
+                <img src="src/img/ropa/${outfit.img}.png" alt="${outfit.titulo}">
+                <h3>${outfit.titulo}</h3>
+                <p>${outfit.descripcion}</p>
+            </div>
+            `;
+        }
+    }).join('');
+} // funcion modificada para multiples imagenes
 
   function obtenerRecomendacionesPorClima(tipoClima) {
     const recomendaciones = {
-      despejado: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Paseo al aire libre",
-            descripcion: "Perfecto para caminar en parques o hacer senderismo con cielo despejado."
-          },
-          {
-            img: 2,
-            titulo: "Picnic o día de playa",
-            descripcion: "Aprovecha el sol para un picnic o disfrutar de actividades acuáticas."
-          },
-          {
-            img: 3,
-            titulo: "Deportes exteriores",
-            descripcion: "Ideal para ciclismo, tenis o cualquier deporte al aire libre."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Ropa ligera",
-            descripcion: "Camisetas de algodón, shorts y vestidos frescos para el calor."
-          },
-          {
-            img: 2,
-            titulo: "Protección solar",
-            descripcion: "Gafas de sol, sombrero y ropa con protección UV."
-          },
-          {
-            img: 3,
-            titulo: "Calzado cómodo",
-            descripcion: "Sandalias o zapatos deportivos para mayor comodidad."
-          }
-        ]
-      },
-      nublado: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Visita a museos",
-            descripcion: "Aprovecha para explorar galerías de arte o museos interiores."
-          },
-          {
-            img: 2,
-            titulo: "Café con amigos",
-            descripcion: "Un día perfecto para reunirse en cafeterías acogedoras."
-          },
-          {
-            img: 3,
-            titulo: "Fotografía urbana",
-            descripcion: "La luz suave es ideal para fotografía de paisajes urbanos."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Capas ligeras",
-            descripcion: "Camiseta más una chaqueta ligera o suéter para cambios de temperatura."
-          },
-          {
-            img: 2,
-            titulo: "Pantalones cómodos",
-            descripcion: "Jeans o pantalones de tela resistente y cómoda."
-          },
-          {
-            img: 3,
-            titulo: "Zapatos cerrados",
-            descripcion: "Calzado que proteja de posibles lloviznas ligeras."
-          }
-        ]
-      },
-      lluvia_ligera: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Lectura en cafetería",
-            descripcion: "Disfruta de un buen libro en un lugar cálido y seco."
-          },
-          {
-            img: 2,
-            titulo: "Cine en casa",
-            descripcion: "Perfecto para maratones de películas o series favoritas."
-          },
-          {
-            img: 3,
-            titulo: "Cocina creativa",
-            descripcion: "Aprovecha para probar nuevas recetas en casa."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Impermeable ligero",
-            descripcion: "Chaqueta resistente al agua o paraguas para protección."
-          },
-          {
-            img: 2,
-            titulo: "Calzado impermeable",
-            descripcion: "Botas o zapatos que mantengan tus pies secos."
-          },
-          {
-            img: 3,
-            titulo: "Capas cálidas",
-            descripcion: "Ropa que mantenga el calor corporal en ambiente húmedo."
-          }
-        ]
-      },
-      lluvia_fuerte: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Actividades en interiores",
-            descripcion: "Museos, centros comerciales o actividades bajo techo."
-          },
-          {
-            img: 2,
-            titulo: "Spa day en casa",
-            descripcion: "Aprovecha para relajarte con un día de cuidado personal."
-          },
-          {
-            img: 3,
-            titulo: "Juegos de mesa",
-            descripcion: "Perfecto para reuniones familiares o con amigos en casa."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Impermeable completo",
-            descripcion: "Chaqueta y pantalón impermeables para máxima protección."
-          },
-          {
-            img: 2,
-            titulo: "Botas de lluvia",
-            descripcion: "Calzado impermeable alto para evitar mojarse."
-          },
-          {
-            img: 3,
-            titulo: "Ropa de repuesto",
-            descripcion: "Lleva ropa extra en caso de mojarse completamente."
-          }
-        ]
-      },
-      tormenta: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Quedarse en casa",
-            descripcion: "La opción más segura durante tormentas eléctricas."
-          },
-          {
-            img: 2,
-            titulo: "Meditación interior",
-            descripcion: "Aprovecha el sonido de la lluvia para relajarte."
-          },
-          {
-            img: 3,
-            titulo: "Organización personal",
-            descripcion: "Ideal para ordenar espacios o planificar proyectos."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Ropa seca interior",
-            descripcion: "Pijamas cómodas o ropa de estar por casa."
-          },
-          {
-            img: 2,
-            titulo: "Prendas cálidas",
-            descripcion: "Suéteres y pantalones cómodos para interior."
-          },
-          {
-            img: 3,
-            titulo: "Calzado interior",
-            descripcion: "Pantunflas o calcetines gruesos para comodidad."
-          }
-        ]
-      },
-      nieve: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Deportes de invierno",
-            descripcion: "Esquí, snowboard o simplemente jugar con la nieve."
-          },
-          {
-            img: 2,
-            titulo: "Chocolate caliente",
-            descripcion: "Disfruta de bebidas calientes en cafeterías acogedoras."
-          },
-          {
-            img: 3,
-            titulo: "Fotografía invernal",
-            descripcion: "Captura paisajes nevados con la cámara."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Abrigo térmico",
-            descripcion: "Chaqueta gruesa impermeable y aislante térmico."
-          },
-          {
-            img: 2,
-            titulo: "Accesorios de invierno",
-            descripcion: "Guantes, gorro y bufanda para protección completa."
-          },
-          {
-            img: 3,
-            titulo: "Botas de nieve",
-            descripcion: "Calzado antideslizante y resistente al agua."
-          }
-        ]
-      },
-      niebla: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Paseos misteriosos",
-            descripcion: "Caminatas cortas disfrutando del ambiente misterioso."
-          },
-          {
-            img: 2,
-            titulo: "Fotografía atmosférica",
-            descripcion: "Captura imágenes con efectos dramáticos y etéreos."
-          },
-          {
-            img: 3,
-            titulo: "Lectura en biblioteca",
-            descripcion: "Ambiente perfecto para sumergirse en buenos libros."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Ropa visible",
-            descripcion: "Prendas claras o reflectantes para mayor seguridad."
-          },
-          {
-            img: 2,
-            titulo: "Capas medias",
-            descripcion: "Suéteres y chaquetas que mantengan el calor húmedo."
-          },
-          {
-            img: 3,
-            titulo: "Calzado resistente",
-            descripcion: "Zapatos que proporcionen buena tracción en humedad."
-          }
-        ]
-      },
-      extremo: {
-        actividades: [
-          {
-            img: 1,
-            titulo: "Quedarse en interiores",
-            descripcion: "Máxima seguridad durante condiciones climáticas extremas."
-          },
-          {
-            img: 2,
-            titulo: "Preparación de emergencia",
-            descripcion: "Revisar suministros y plan de emergencia familiar."
-          },
-          {
-            img: 3,
-            titulo: "Actividades tranquilas",
-            descripcion: "Ejercicios de relajación o hobbies indoor."
-          }
-        ],
-        ropa: [
-          {
-            img: 1,
-            titulo: "Ropa de protección",
-            descripcion: "Prendas que cubran completamente brazos y piernas."
-          },
-          {
-            img: 2,
-            titulo: "Calzado robusto",
-            descripcion: "Botas resistentes para condiciones difíciles."
-          },
-          {
-            img: 3,
-            titulo: "Accesorios de seguridad",
-            descripcion: "Mascarilla o protección respiraria si es necesario."
-          }
-        ]
-      }
+        despejado: {
+            actividades: [
+                {
+                    img: "walking",
+                    titulo: "Senderismo en parques naturales",
+                    descripcion: "Ruta de 5-10km por áreas verdes con calzado deportivo"
+                },
+                {
+                    img: "picnic",
+                    titulo: "Picnic al aire libre",
+                    descripcion: "Almuerzo en parques o áreas recreativas con manta y juegos"
+                },
+                {
+                    img: "sport",
+                    titulo: "Deportes al aire libre",
+                    descripcion: "Partidos de fútbol, tenis o pádel"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["shirt", "sandals"],
+                    titulo: "Vestimenta ligera + sandalias",
+                    descripcion: "Ropa fresca de algodón con calzado abierto"
+                },
+                {
+                    img: ["shorts", "football"],
+                    titulo: "Shorts + camiseta deportiva",
+                    descripcion: "Conjunto para ejercicio con gorra"
+                },
+                {
+                    img: ["poodle-skirt", "blouse", "jogging"],
+                    titulo: "Falda + blusa + zapatos cómodos",
+                    descripcion: "Outfit fresco para paseos urbanos"
+                }
+            ]
+        },
+        parcialmente_nublado: {
+            actividades: [
+                {
+                    img: "bicycle",
+                    titulo: "Paseo en bicicleta",
+                    descripcion: "Recorrido por ciclovías y parques de la ciudad"
+                },
+                {
+                    img: "terrace",
+                    titulo: "Tarde en terrazas",
+                    descripcion: "Disfrutar de bebidas y comida con vistas panorámicas"
+                },
+                {
+                    img: "world-book-day",
+                    titulo: "Visita a ferias culturales",
+                    descripcion: "Exploración de eventos culturales y exposiciones"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["jeans", "tee-shirt", "hoodie"],
+                    titulo: "Jeans + camiseta + suéter ligero",
+                    descripcion: "Ideal para adaptarse a cambios de temperatura"
+                },
+                {
+                    img: ["trouser", "polo-shirt2", "denim-jacket"],
+                    titulo: "Pantalón casual + polo + chamarra ligera",
+                    descripcion: "Vestimenta casual y práctica"
+                },
+                {
+                    img: ["skirt", "person", "shoes-w"],
+                    titulo: "Vestido + chamarra ligera + zapatos cómodos",
+                    descripcion: "Estilo adaptable con calzado cómodo"
+                }
+            ]
+        },
+        nublado: {
+            actividades: [
+                {
+                    img: "shopping-cart",
+                    titulo: "Ir de compras al centro comercial",
+                    descripcion: "Recorrer tiendas y áreas de comida"
+                },
+                {
+                    img: "book",
+                    titulo: "Recorrer bibliotecas o librerías",
+                    descripcion: "Descubrir y leer libros nuevos"
+                },
+                {
+                    img: "cinema",
+                    titulo: "Función de cine o teatro",
+                    descripcion: "Disfrutar de proyecciones o actuaciones artísticas"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["woman", "jeans-w", "covering"],
+                    titulo: "Chaqueta impermeable + jeans + paraguas",
+                    descripcion: "Protección completa para lloviznas"
+                },
+                {
+                    img: ["trousers", "jacket-water3", "rubber"],
+                    titulo: "Suéter + pantalón resistente al agua + botas",
+                    descripcion: "Protección contra humedad"
+                },
+                {
+                    img: ["jacket-w", "jogger-pants", "sneakers"],
+                    titulo: "Sudadera con capucha + leggings + tenis impermeables",
+                    descripcion: "Confort y protección ligera"
+                }
+            ]
+        },
+        lluvia: {
+            actividades: [
+                {
+                    img: "read",
+                    titulo: "Maratón de lectura",
+                    descripcion: "Disfrutar de varias horas leyendo tu libro favorito"
+                },
+                {
+                    img: "popcorn",
+                    titulo: "Cine en casa",
+                    descripcion: "Ver una saga de películas con snacks y ambiente cómodo"
+                },
+                {
+                    img: "cooking",
+                    titulo: "Clases de cocina",
+                    descripcion: "Aprender a preparar nuevas recetas paso a paso"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["woman", "rubber"],
+                    titulo: "Impermeable + botas de lluvia",
+                    descripcion: "Seco y protegido contra la lluvia"
+                },
+                {
+                    img: ["jacket-water", "jeans","backpack"],
+                    titulo: "Chaqueta resistente al agua + pantalón cómodo + mochila impermeable",
+                    descripcion: "Equipado para salir"
+                },
+                {
+                    img: ["hood", "leggings2", "hiking-boots"],
+                    titulo: "Chamarra con capucha + leggings + botas impermeables",
+                    descripcion: "Cómodo y listo para la lluvia"
+                }
+            ]
+        },
+        tormenta: {
+            actividades: [
+                {
+                    img: "movie-house",
+                    titulo: "Home cinema",
+                    descripcion: "Sesión de películas con sistema de sonido"
+                },
+                {
+                    img: "yoga",
+                    titulo: "Yoga y meditación",
+                    descripcion: "Practicar ejercicios de relajación y respiración"
+                },
+                {
+                    img: "house",
+                    titulo: "Organización del hogar",
+                    descripcion: "Reorganización de armarios y espacios de la casa"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["pijama", "espadrille"],
+                    titulo: "Pijama de algodón + pantuflas",
+                    descripcion: "Máxima comodidad para estar en casa"
+                },
+                {
+                    img: "football-uniform",
+                    titulo: "Ropa deportiva para casa",
+                    descripcion: "Conjunto cómodo para estar en casa"
+                },
+                {
+                    img: ["jogger-pants", "t-shirt", "socks"],
+                    titulo: "Leggings + playera holgada + calcetines cálidos",
+                    descripcion: "Conjunto de prendas cálidas y cómodas"
+                }
+            ]
+        },
+        nieve_ligera: {
+            actividades: [
+                {
+                    img: "snowball",
+                    titulo: "Paseos por paisajes nevados",
+                    descripcion: "Caminatas cortas para disfrutar del invierno"
+                },
+                {
+                    img: "hot-chocolate",
+                    titulo: "Chocolate caliente en cafés",
+                    descripcion: "Degustar bebidas calientes en sitios confortables"
+                },
+                {
+                    img: "tree",
+                    titulo: "Fotografía invernal",
+                    descripcion: "Captura de paisajes y retratos con nieve"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["clothes-winter", "boots-winter","winter-gloves"],
+                    titulo: "Abrigo de lana + jeans + botas resistentes + guantes",
+                    descripcion: "Abrigado y protegido del frío"
+                },
+                {
+                    img: ["jacket-winter", "pants-winter2","scarf-winters"],
+                    titulo: "Chaqueta acolchada + pantalón de invierno + gorro + bufanda",
+                    descripcion: "Cálido y listo para la nieve"
+                },
+                {
+                    img: ["jacket-woman", "leggings2","boot-shoes-winter"],
+                    titulo: "Chamarra gruesa + leggings térmicos + calzado antideslizante",
+                    descripcion: "Equipado para caminar sobre nieve"
+                }
+            ]
+        },
+        nieve_fuerte: {
+            actividades: [
+                {
+                    img: "slope",
+                    titulo: "Deportes de invierno",
+                    descripcion: "Esquí, snowboard o trineo en pistas nevadas"
+                },
+                {
+                    img: "snowball2",
+                    titulo: "Juegos en la nieve",
+                    descripcion: "Construcción de muñecos y batallas de nieve"
+                },
+                {
+                    img: "cabin-winter",
+                    titulo: "Estancias en cabañas",
+                    descripcion: "Compartir tiempo en espacios protegidos de la nieve"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["winter-clothes", "winter-gloves3", "goggles-winter"],
+                    titulo: "Traje de nieve completo + guantes + gafas",
+                    descripcion: "Equipamiento completo para deportes de invierno"
+                },
+                {
+                    img: ["jacket-grueso", "sweater-winter3", "winter-boot2"],
+                    titulo: "Abrigo grueso + varias capas térmicas + botas de nieve",
+                    descripcion: "Máxima protección contra el frío"
+                },
+                {
+                    img: ["jacket-winter", "pants-winter", "scarf-winters"],
+                    titulo: "Chamarra extrema + pantalón térmico + protección facial",
+                    descripcion: "Abrigado para condiciones extremas"
+                }
+            ]
+        },
+        niebla: {
+            actividades: [
+                {
+                    img: "map-compass",
+                    titulo: "Caminatas cortas con brújula",
+                    descripcion: "Rutas breves en áreas conocidas"
+                },
+                {
+                    img: "landscape-niebla2",
+                    titulo: "Fotografía atmosférica",
+                    descripcion: "Capturar paisajes y efectos visuales con niebla"
+                },
+                {
+                    img: "library",
+                    titulo: "Bibliotecas",
+                    descripcion: "Lectura y estudio en espacios interiores bien iluminados"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["brand", "reflective-vest2"],
+                    titulo: "Ropa de colores claros + elementos reflectantes",
+                    descripcion: "Mayor visibilidad para seguridad"
+                },
+                {
+                    img: ["coat-niebla", "trousers-niebla", "flashlight"],
+                    titulo: "Abrigo claro + pantalones visibles + linterna",
+                    descripcion: "Prendas claras con iluminación"
+                },
+                {
+                    img: ["jacket-color", "wristwatch", "shoes-w"],
+                    titulo: "Chamarra colorida + accesorios reflectantes + calzado antideslizante",
+                    descripcion: "Visible y seguro para caminar"
+                }
+            ]
+        },
+        viento: {
+            actividades: [
+                {
+                    img: "windsurfing",
+                    titulo: "Deportes de viento",
+                    descripcion: "Volar cometas, hacer windsurf o kitesurf"
+                },
+                {
+                    img: "hiking-travel2",
+                    titulo: "Rutas protegidas",
+                    descripcion: "Caminar por zonas resguardadas del viento fuerte"
+                },
+                {
+                    img: "diy-hammer",
+                    titulo: "Talleres en interiores",
+                    descripcion: "Actividades manuales y creativas bajo techo"
+                }
+            ],
+            ropa: [
+                {
+                    img: ["inuit", "wind", "pants-winter"],
+                    titulo: "Ropa cortaviento",
+                    descripcion: "Prendas que reducen la resistencia al viento"
+                },
+                {
+                    img: ["jacket-thermal", "thermal-underwear", "safety-glasses"],
+                    titulo: "Chaqueta cortaviento + ropa térmica + gafas",
+                    descripcion: "Protegido del viento y el polvo"
+                },
+                {
+                    img: ["jacket-4", "tights2", "sneakers3"],
+                    titulo: "Chamarra resistente + mallas + calzado estable",
+                    descripcion: "Seguro en condiciones ventosas"
+                }
+            ]
+        },
+        extremo: {
+            actividades: [
+                {
+                    img: "31",
+                    titulo: "Permanecer en interiores seguros",
+                    descripcion: "Resguardarse en zonas protegidas del hogar"
+                },
+                {
+                    img: "32",
+                    titulo: "Revisar kit de emergencia",
+                    descripcion: "Verificar suministros básicos y documentos importantes"
+                },
+                {
+                    img: "33",
+                    titulo: "Actividades tranquilas en casa",
+                    descripcion: "Hobbies particulares"
+                }
+            ],
+            ropa: [
+                {
+                    img: "31",
+                    titulo: "Ropa de protección completa",
+                    descripcion: "Prendas que cubran todo el cuerpo"
+                },
+                {
+                    img: "32",
+                    titulo: "Calzado resistente + guantes",
+                    descripcion: "Protección para manos y pies"
+                },
+                {
+                    img: "33",
+                    titulo: "Mascarilla + gafas protectoras",
+                    descripcion: "Para resguardar vías respiratorias y ojos"
+                }
+            ]
+        }
     };
 
     return recomendaciones[tipoClima] || recomendaciones.despejado;
-  }
+}
 })();
