@@ -8,8 +8,39 @@ body {
   flex-direction: column;
   min-height: 100vh;
   font-family: 'Segoe UI', Arial, sans-serif;
-  background-color: #fff;
   color: #000;
+  /* Quitamos background liso y usamos capa con imagen (ver body::before) */
+  background: transparent;
+  position: relative; /* contexto para ::before */
+  overflow-x: hidden; /* por seguridad con animaciones */
+}
+
+/* Imagen de fondo de toda la página con opacidad baja
+   - Ajusta la ruta a tu imagen de fondo si es necesario.
+   - Puedes cambiar 'cover/center/fixed' según tu preferencia. */
+body::before {
+  content: "";
+  position: fixed;           /* cubrir toda la ventana y no scrollear */
+  inset: 0;
+  background-image: url("/src/img/bck_idx.png"); /* <-- AJUSTA RUTA SI PROCEDE */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.88;             /* opacidad baja */
+  pointer-events: none;      /* no interferir con clics */
+  z-index: -2;               /* al fondo */
+}
+
+/* Capa de color sutil (por si quieres un tinte global adicional).
+   Si no la quieres, comenta este bloque. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(1200px 800px at 50% 20%, rgba(33, 78, 180, 0.18), transparent 60%),
+              linear-gradient(to bottom, rgba(20, 60, 160, 0.08), rgba(20, 60, 160, 0.02));
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* Incluir padding/borde en los cálculos de ancho/alto */
@@ -34,8 +65,9 @@ main { flex: 1; }
 
 .nav a {
   text-decoration: none;
-  color: #5b5bde;
-  font-weight: 500;
+  color: #2e3aa6;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
 }
 
 .btn {
@@ -43,27 +75,67 @@ main { flex: 1; }
   color: #fff;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  box-shadow: 0 6px 20px rgba(50,50,200,0.18);
+  transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease;
 }
 
-.btn:hover { background-color: #4d47c3; }
+.btn:hover { background-color: #4d47c3; transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
 
 /* ============================================================
-   Título principal
+   Hero / panel glass
    ============================================================ */
-.main { text-align: center; padding: 3rem 1rem; }
+.main {
+  /* centrado del panel glass */
+  display: grid;
+  place-items: center;
+  padding: 4rem 1rem 3rem;
+  text-align: center;
+  position: relative;
+}
 
-.titulo {
-  font-size: 4rem;
-  font-weight: 900;
-  color: #000;
-  text-shadow: 5px 5px 0 #f8b84a;
-  margin-bottom: 2rem;
+/* TARJETA GLASS con tinte azul sutil */
+.hero-card.glass {
+  width: min(92vw, 820px);
+  padding: 2.2rem 1.4rem 2rem;
+  border-radius: 18px;
+  /* Fondo translúcido con tinte azul muy sutil */
+  background: linear-gradient(180deg, rgba(30, 80, 200, 0.14), rgba(20, 70, 180, 0.10))
+              , rgba(255,255,255,0.40);
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow:
+      0 20px 60px rgba(15, 40, 120, 0.25),
+      inset 0 1px 0 rgba(255,255,255,0.45),
+      0 0 0 1px rgba(20, 70, 160, 0.06);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  backdrop-filter: blur(12px) saturate(120%);
+}
+
+/* Separación interna */
+.hero-card .stack {
+  display: grid;
+  gap: 1rem;
 }
 
 /* ============================================================
-   Buscador
+   Título principal (con animación)
+   ============================================================ */
+.titulo {
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-weight: 900;
+  color: #0b1022;
+  text-shadow: 5px 5px 0 rgba(248, 184, 74, 0.95);
+  margin: 0 0 1rem;
+  line-height: 1.05;
+  opacity: 0;                 /* inicio animación */
+  transform: translateY(-24px);
+  animation: slideFadeIn .8s cubic-bezier(.2,.8,.2,1) .05s forwards;
+}
+
+/* ============================================================
+   Buscador (con animación)
    ============================================================ */
 .buscador {
   display: flex;
@@ -72,22 +144,39 @@ main { flex: 1; }
   gap: 0.7rem;
 }
 
-.buscador label { font-size: 0.9rem; font-weight: 500; }
+.buscador label { font-size: 0.95rem; font-weight: 600; color: #0b1022; }
 
-/* Wrapper input + icon-button + dropdown */
 .autocomplete {
   position: relative;
   width: clamp(260px, 90vw, 600px); /* evita input pequeño, crece hasta 600px */
+  opacity: 0;                 /* inicio animación */
+  transform: translateY(-18px);
+  animation: slideFadeIn .85s cubic-bezier(.2,.8,.2,1) .18s forwards;
 }
 
 /* Input ocupa todo el ancho del wrapper */
 .buscador input {
   width: 100%;
-  padding: 0.7rem 2.6rem 0.7rem 0.7rem; /* espacio a la derecha para el icono */
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 0.9rem 2.8rem 0.9rem 0.9rem; /* espacio a la derecha para el icono */
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 12px;
   font-size: 1rem;
   display: block;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 8px 24px rgba(20, 60, 160, 0.08);
+  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+
+.buscador input:hover {
+  border-color: rgba(20,70,180,0.35);
+  box-shadow: 0 14px 32px rgba(20, 60, 160, 0.12);
+}
+
+.buscador input:focus {
+  outline: none;
+  border-color: rgba(20,70,180,0.55);
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 18px 40px rgba(20, 60, 160, 0.18);
 }
 
 /* Botón icónico dentro del input (tipo Google) */
@@ -96,33 +185,23 @@ main { flex: 1; }
   top: 50%;
   right: 8px;
   transform: translateY(-50%);
-  height: 34px;
-  min-width: 34px;
-  width: 34px;
+  height: 36px;
+  min-width: 36px;
+  width: 36px;
   border: none;
   background: transparent;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 10px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   z-index: 1001; /* por encima del dropdown */
+  transition: background-color .15s ease, transform .08s ease;
 }
 
-.search-icon-btn:hover { background: #f3f3f3; }
-.search-icon-btn svg { width: 18px; height: 18px; fill: #000; }
-
-/* Botón grande secundario (debajo) */
-.buscar-btn {
-  background-color: #6b96c8;
-  color: #fff;
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 6px;
-  cursor: pointer;
-  margin-top: 1rem;
-}
-.buscar-btn:hover { background-color: #5178a7; }
+.search-icon-btn:hover { background: rgba(0,0,0,0.05); }
+.search-icon-btn:active { transform: translateY(-50%) scale(0.98); }
+.search-icon-btn svg { width: 18px; height: 18px; fill: #0b1022; }
 
 /* ============================================================
    Lista de sugerencias
@@ -130,19 +209,23 @@ main { flex: 1; }
 .suggestions-list {
   display: none;            /* JS controla show/hide */
   position: absolute;
-  top: calc(100% + 6px);    /* debajo del input */
+  top: calc(100% + 8px);    /* debajo del input */
   left: 0;
   right: 0;                 /* mismo ancho del wrapper */
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(20,70,160,0.18);
+  border-radius: 12px;
   list-style: none;
   margin: 0;
   padding: 6px 0;
   z-index: 1000;            /* debajo del icon-button, encima del fondo */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  max-height: 280px;
+  box-shadow:
+    0 18px 50px rgba(15, 40, 120, 0.20),
+    0 0 0 1px rgba(20,70,160,0.05);
+  max-height: 300px;
   overflow-y: auto;
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  backdrop-filter: blur(10px) saturate(120%);
 }
 
 .suggestions-list li {
@@ -151,27 +234,30 @@ main { flex: 1; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: background-color .12s ease;
 }
 
-.suggestions-list li:hover { background-color: #f0f0f0; }
+.suggestions-list li:hover { background-color: rgba(20,70,160,0.06); }
 
 /* Último item tipo acción: “Buscar ‘…’ ” */
 .suggestions-list li.action {
   position: sticky;
   bottom: 0;                 /* siempre visible al final */
-  background: #fafafa;
-  border-top: 1px solid #eee;
-  font-weight: 600;
+  background: rgba(240,245,255,0.96);
+  border-top: 1px solid rgba(20,70,160,0.12);
+  font-weight: 700;
 }
 
 /* ============================================================
    Footer
    ============================================================ */
 .footer {
-  background-color: #f6b562;
+  background: linear-gradient(180deg, rgba(246,181,98,0.90), rgba(246,181,98,0.94));
   text-align: center;
   padding: 2rem 1rem 1rem;
   margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 0 -8px 30px rgba(15, 40, 120, 0.10);
 }
 
 .social {
@@ -188,3 +274,33 @@ main { flex: 1; }
 }
 
 .footer p { font-size: 0.95rem; margin: 0; }
+
+/* ============================================================
+   Animaciones
+   ============================================================ */
+
+/* slide + fade de arriba hacia el centro */
+@keyframes slideFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-28px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respeto a usuarios con reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .titulo,
+  .autocomplete {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

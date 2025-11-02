@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>El Climón</title>
-  <!-- Enlace correcto al CSS -->
+  <!-- CSS -->
   <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
@@ -21,48 +21,49 @@
 
   <!-- Contenido principal -->
   <main class="main">
-    <h1 class="titulo">EL CLIMÓN</h1>
+    <!-- Panel central con efecto glass -->
+    <section class="hero-card glass">
+      <div class="stack">
+        <h1 class="titulo">EL CLIMÓN</h1>
 
-    <!-- Contenedor del buscador -->
-    <div class="suggestions-container">
-      <form class="buscador" id="searchForm" autocomplete="off">
-        <label for="ciudad">Buscar Ciudad</label>
+        <!-- Buscador -->
+        <div class="suggestions-container">
+          <form class="buscador" id="searchForm" autocomplete="off">
+            <label for="ciudad">Buscar Ciudad</label>
 
-        <div class="autocomplete">
-          <input
-            type="text"
-            id="ciudad"
-            name="q"
-            placeholder="Ciudad..."
-            required
-            aria-autocomplete="list"
-            aria-controls="suggestions"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-          />
+            <div class="autocomplete">
+              <input
+                type="text"
+                id="ciudad"
+                name="q"
+                placeholder="Ciudad..."
+                required
+                aria-autocomplete="list"
+                aria-controls="suggestions"
+                aria-expanded="false"
+                aria-haspopup="listbox"
+              />
 
-          <!-- Botón-ícono dentro del input como en google -->
-          <button
-            class="search-icon-btn"
-            type="submit"
-            aria-label="Buscar"
-            title="Buscar"
-          >
-            
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-              <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
-            </svg>
-          </button>
+              <!-- Botón-ícono dentro del input (tipo Google) -->
+              <button
+                class="search-icon-btn"
+                type="submit"
+                aria-label="Buscar"
+                title="Buscar"
+              >
+                <!-- Ícono de lupa -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+                  <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z" />
+                </svg>
+              </button>
 
-          <!-- Dropdown -->
-          <ul id="suggestions" class="suggestions-list" role="listbox" aria-label="Sugerencias"></ul>
+              <!-- Dropdown -->
+              <ul id="suggestions" class="suggestions-list" role="listbox" aria-label="Sugerencias"></ul>
+            </div>
+          </form>
         </div>
-
-        <!-- Botón de buscar, ya no lo necesitamos porque aparte de ser reemplazado por el icono dentro del input queda también 
-         debajo de las sugerencias en tal caso de escribir una ciudad (queda inaccesible)  -->
-        <!-- <button type="submit" class="buscar-btn">Buscar</button> -->
-      </form>
-    </div>
+      </div>
+    </section>
   </main>
 
   <!-- Pie de página -->
