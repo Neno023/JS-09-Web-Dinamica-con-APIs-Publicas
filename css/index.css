@@ -111,6 +111,8 @@ main { flex: 1; }
       0 0 0 1px rgba(20, 70, 160, 0.06);
   -webkit-backdrop-filter: blur(12px) saturate(120%);
   backdrop-filter: blur(12px) saturate(120%);
+  position: relative;
+  z-index: 10;
 }
 
 /* Separación interna */
@@ -279,7 +281,6 @@ main { flex: 1; }
    Animaciones
    ============================================================ */
 
-/* slide + fade de arriba hacia el centro */
 @keyframes slideFadeIn {
   0% {
     opacity: 0;
@@ -295,7 +296,7 @@ main { flex: 1; }
   }
 }
 
-/* Respeto a usuarios con reducción de movimiento */
+
 @media (prefers-reduced-motion: reduce) {
   .titulo,
   .autocomplete {

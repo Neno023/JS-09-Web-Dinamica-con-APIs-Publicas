@@ -1,7 +1,5 @@
-
-
 // ==================== CONFIGURACIÓN Y SELECTOR ====================
-const apiKey = '579d8622c67f62745e2dc1592a37b897'; // Tu API Key
+const apiKey = '579d8622c67f62745e2dc1592a37b897'; 
 const $ = (sel) => document.querySelector(sel);
 
 // ==================== FUNCIONES DE UTILIDAD ====================
@@ -16,7 +14,7 @@ function saveForRecs(payload) {
   try {
     sessionStorage.setItem('climon.rec', JSON.stringify(payload));
   } catch {}
-  
+
   const link = document.getElementById('recomLink');
   if (link) {
     const qp = new URLSearchParams({
@@ -44,10 +42,117 @@ document.addEventListener('DOMContentLoaded', () => {
     $('#cityInput').value = cityFromURL;
     getWeatherByCityName(cityFromURL);
   } else {
-    // Asegura que el link de recomendaciones exista aunque no haya datos
     const link = document.getElementById('recomLink');
     if (link) link.href = 'sugerencias.html';
   }
+
+  const formEl = $('#searchForm');
+  const inputEl = $('#cityInput');
+  const listEl = $('#ciSuggestions');
+  let debounceTimer;
+  let lastQuery = '';
+
+  const clearSuggestions = () => {
+    listEl.innerHTML = '';
+    listEl.style.display = 'none';
+    inputEl.setAttribute('aria-expanded', 'false');
+  };
+
+  const showSuggestions = () => {
+    listEl.style.display = 'block';
+    inputEl.setAttribute('aria-expanded', 'true');
+  };
+
+  const buildSearchActionItem = (query) => {
+    const action = document.createElement('li');
+    action.className = 'action';
+    action.role = 'option';
+    action.dataset.action = 'submit';
+    const safe = query || '';
+    action.textContent = safe ? `Buscar “${safe}”` : 'Buscar';
+    action.addEventListener('click', () => {
+      formEl.requestSubmit();
+    });
+    return action;
+  };
+
+  const displaySuggestions = (cities) => {
+    listEl.innerHTML = '';
+    if (!Array.isArray(cities)) { clearSuggestions(); return; }
+    showSuggestions();
+    cities.forEach((city, index) => {
+      const li = document.createElement('li');
+      const state = city.state ? `, ${city.state}` : '';
+      li.textContent = `${city.name}, ${city.country}${state}`;
+      li.dataset.lat = city.lat;
+      li.dataset.lon = city.lon;
+      li.role = 'option';
+      li.id = `suggestion-${index}`;
+      li.addEventListener('click', () => {
+        window.history.pushState({}, '', `climainfo.html?lat=${city.lat}&lon=${city.lon}`);
+        getWeatherByCoords(city.lat, city.lon);
+        clearSuggestions();
+        inputEl.value = `${city.name}`;
+      });
+      listEl.appendChild(li);
+    });
+    listEl.appendChild(buildSearchActionItem(lastQuery));
+  };
+
+  const getCitySuggestions = async (query) => {
+    lastQuery = query;
+    if (query.length < 3) { clearSuggestions(); return; }
+    const url = `https://api.openweathermap.org/geo/1.0/direct?q=${encodeURIComponent(query)}&limit=5&appid=${apiKey}`;
+    try {
+      const response = await fetch(url);
+      const cities = await response.json();
+      displaySuggestions(cities);
+    } catch (error) {
+      console.error('Error al obtener sugerencias:', error);
+      clearSuggestions();
+    }
+  };
+
+  inputEl.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    const query = inputEl.value.trim();
+    debounceTimer = setTimeout(() => {
+      getCitySuggestions(query);
+    }, 300);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.autocomplete')) {
+      clearSuggestions();
+    }
+  });
+
+  formEl.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const firstCity = listEl.querySelector('li:not(.action)');
+    if (firstCity && firstCity.dataset.lat && firstCity.dataset.lon) {
+      firstCity.click();
+      return;
+    }
+    const city = inputEl.value.trim();
+    if (city) {
+      window.history.pushState({}, '', `climainfo.html?q=${encodeURIComponent(city)}`);
+      getWeatherByCityName(city);
+      clearSuggestions();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      clearSuggestions();
+    }
+  });
+
+  inputEl.addEventListener('focus', () => {
+    if (listEl.children.length > 0) {
+      showSuggestions();
+    }
+  });
 });
 
 $('#searchForm').addEventListener('submit', (e) => {
@@ -61,7 +166,6 @@ $('#searchForm').addEventListener('submit', (e) => {
 
 // ==================== FUNCIONES DE ORQUESTACIÓN (EN PARALELO) ====================
 async function getWeatherByCoords(lat, lon) {
-    // Las 3 llamadas se inician al mismo tiempo para mayor velocidad
     await Promise.all([
         getCurrentWeather(null, lat, lon),
         getForecast(null, lat, lon),
@@ -70,7 +174,6 @@ async function getWeatherByCoords(lat, lon) {
 }
 
 async function getWeatherByCityName(city) {
-    // Las 3 llamadas se inician al mismo tiempo para mayor velocidad
     await Promise.all([
         getCurrentWeather(city, null, null),
         getForecast(city, null, null),
@@ -108,7 +211,7 @@ async function getCurrentWeather(city, lat, lon) {
 
             saveForRecs({
               city: `${data.name}, ${data.sys.country}`,
-              desc: toOneLine((data.weather?.[0]?.description || '').toLowerCase()), // Lógica mejorada
+              desc: toOneLine((data.weather?.[0]?.description || '').toLowerCase()),
               temp: Math.round(data.main.temp),
               feels: Math.round(data.main.feels_like),
               hum: data.main.humidity,
@@ -125,7 +228,7 @@ async function getCurrentWeather(city, lat, lon) {
     } catch (e) {
         console.error('Error clima actual', e);
         const link = document.getElementById('recomLink');
-        if (link) link.href = 'sugerencias.html'; // Manejo de error de red
+        if (link) link.href = 'sugerencias.html';
     }
 }
 
@@ -141,7 +244,6 @@ async function getForecast(city, lat, lon) {
             renderHourly(data.list);
             renderDaily(data.list);
         } else {
-            // Limpia si la ciudad no es encontrada
             $('#hourlyForecast').innerHTML = '';
             $('#dailyForecast').innerHTML = '';
         }
@@ -164,7 +266,7 @@ async function getWeatherMap(city, lat, lon) {
           }
       } catch (e) {
           console.error('Error mapa', e);
-          $('#mapResult').innerHTML = ''; // Limpia en caso de error de red
+          $('#mapResult').innerHTML = '';
           return;
       }
   }
@@ -180,7 +282,7 @@ async function getWeatherMap(city, lat, lon) {
           </iframe>
         </div>`;
   } else {
-      $('#mapResult').innerHTML = ''; // Limpia si no se encontraron coordenadas
+      $('#mapResult').innerHTML = '';
   }
 }
 

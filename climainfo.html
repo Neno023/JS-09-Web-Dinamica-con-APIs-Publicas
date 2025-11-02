@@ -10,7 +10,7 @@
 
   <!-- HEADER igual que index.html -->
   <header class="header">
-    <img src="src/img/logo.png" class="logo" alt="El Climón">
+    <a href="index.html"><img src="src/img/logo.png" class="logo" alt="El Climón"></a>
     <nav class="nav">
       <a href="nosotros.html">Nosotros</a>
       <a href="sugerencias.html" id="recomLink">Recomendaciones</a>
@@ -25,8 +25,15 @@
     <!-- Buscador -->
     <form class="buscador buscador--inline" action="climainfo.html" method="get" id="searchForm" autocomplete="off">
       <label for="cityInput" class="visually-hidden">Buscar Ciudad</label>
-      <input type="text" id="cityInput" name="q" placeholder="Buscar otra ciudad..." required>
-      <button type="submit" id="searchBtn" class="buscar-btn">Buscar</button>
+      <div class="autocomplete">
+        <input type="text" id="cityInput" name="q" placeholder="Buscar otra ciudad..." required aria-autocomplete="list" aria-controls="ciSuggestions" aria-expanded="false" aria-haspopup="listbox">
+        <button class="search-icon-btn" type="submit" aria-label="Buscar" title="Buscar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+            <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/>
+          </svg>
+        </button>
+        <ul id="ciSuggestions" class="suggestions-list" role="listbox" aria-label="Sugerencias"></ul>
+      </div>
     </form>
 
     <!-- Clima actual -->
@@ -49,6 +56,7 @@
     </section>
 
     <!-- Pronóstico -->
+    
     <section class="forecast">
       <h3 class="section-title">Pronóstico por hora</h3>
       <div class="grid grid-hourly" id="hourlyForecast" role="list"></div>
