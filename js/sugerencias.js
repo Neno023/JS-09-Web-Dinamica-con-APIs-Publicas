@@ -473,34 +473,34 @@
         extremo: {
             actividades: [
                 {
-                    img: "31",
+                    img: "house-stay",
                     titulo: "Permanecer en interiores seguros",
                     descripcion: "Resguardarse en zonas protegidas del hogar"
                 },
                 {
-                    img: "32",
+                    img: "emergency-kit",
                     titulo: "Revisar kit de emergencia",
                     descripcion: "Verificar suministros básicos y documentos importantes"
                 },
                 {
-                    img: "33",
+                    img: "jigsaw",
                     titulo: "Actividades tranquilas en casa",
                     descripcion: "Hobbies particulares"
                 }
             ],
             ropa: [
                 {
-                    img: "31",
+                    img: ["overall-1", "overall-2","atom-3"],
                     titulo: "Ropa de protección completa",
                     descripcion: "Prendas que cubran todo el cuerpo"
                 },
                 {
-                    img: "32",
+                    img: ["gloves-5","boot-4"],
                     titulo: "Calzado resistente + guantes",
                     descripcion: "Protección para manos y pies"
                 },
                 {
-                    img: "33",
+                    img: "gas-mask-5",
                     titulo: "Mascarilla + gafas protectoras",
                     descripcion: "Para resguardar vías respiratorias y ojos"
                 }
